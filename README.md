@@ -1,8 +1,15 @@
-# Getting Started with Create React App
+<!-- # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). -->
 
-## Available Scripts
+## Getting Started
+
+- Navigate to ``frontend`` and ``backend`` and run ``npm install`` respectively
+- Run ``npm start`` in ``frontend``
+- Run ``node index.js`` in ``backend``
+- The app should be located at ``http://localhost:3000``
+
+<!-- ## Available Scripts
 
 In the project directory, you can run:
 
@@ -67,4 +74,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
