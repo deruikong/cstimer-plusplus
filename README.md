@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - Navigate to ``frontend`` and ``backend`` and run ``npm install`` respectively
 - Run ``npm start`` in ``frontend``
-- Run ``node index.js`` in ``backend``
+- Run ``npm run dev`` in ``backend``
 - The app should be located at ``http://localhost:3000``
 
 <!-- ## Available Scripts
