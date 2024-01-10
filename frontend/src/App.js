@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import Container from 'react-bootstrap/Container'
 // import {Timer} from './util.js'
-
+console.log(utils.strToMs("1.234"))
 function User({setSolves, userId}){
   const [username, setUsername] = useState("");
   const logIn = (event)=> {
@@ -28,18 +28,20 @@ function User({setSolves, userId}){
           // create user
           if(!response.data){
             console.log("registered", username)
-            axios.post(`http://localhost:3001/api/user/${username}`).then(response=>{
-              console.log(response.data._id)
+            return axios.post(`http://localhost:3001/api/user/${username}`).then(response=>{
+              console.log('1')
               userId.current = response.data._id
             })
           }
           else{
             console.log("logged in", username)
             // console.log
-            console.log(response.data._id)
+            // console.log(response.data._id)
             setSolves(response.data.solvesList)
             userId.current = response.data._id
           }
+        }).then(()=>{
+          console.log('2')
           userId.current = username
         })
       }
@@ -52,12 +54,12 @@ function User({setSolves, userId}){
 
   return (
     // <Container>
-      <Form onSubmit={logIn}>
+      <Form className="w-75 mx-auto" onSubmit={logIn}>
         <Form.Group as={Row}>
             <Form.Label>Username</Form.Label>
             <Form.Control value={username} onChange={handleUsername} placeholder="username"/>
         </Form.Group>
-        <Form.Group as={Row} controlId="formBasicPassword">
+        <Form.Group as={Row} className="mb-2" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" laceholder="Password" />
         </Form.Group>
@@ -73,7 +75,7 @@ function Scramble({solveCnt, scramble}) {
   // console.log(solveCnt)
   console.log(scramble)
   return (
-    <h2 className='text-center display-5'>{scramble}</h2>
+    <h2 className='text-center display-3'>{scramble}</h2>
   )
 }
 
@@ -117,11 +119,13 @@ function Timer({userId, solveCnt, setSolveCnt, solves, setSolves, scramble, setS
       }else if(timerStatus === 3){
         setTimerStatus(0)
         setSolveCnt(solveCnt + 1)
+        console.log("Current time: " + time)
         const curSolve = {
-          time: Date.now() - beginTime.current,
+          time: utils.strToMs(time),
           scramble: scramble
         }
-        // console.log(curSolve)
+        // console.log("Current time: " + curSolve.time)
+        // console.log("Current user:" + userId.current)
         axios.post(`http://localhost:3001/api/user/${userId.current}/solves`, curSolve)
           .then(response=>{
             console.log(response.data)
@@ -141,7 +145,7 @@ function Timer({userId, solveCnt, setSolveCnt, solves, setSolves, scramble, setS
       document.getElementById("solver").removeEventListener("keyup", handleKeyup)
     })
     // eslint-disable-next-line
-  }, [timerStatus, scramble])
+  }, [timerStatus, scramble, time])
 
   useEffect(() => {
     // console.log(timerStatus)
@@ -158,9 +162,15 @@ function Timer({userId, solveCnt, setSolveCnt, solves, setSolves, scramble, setS
   return (
     // <div className="mx-auto">
     //   <h1>Current Time:</h1>
-    <div className='mx-auto'>
-      <h1 className='display-1 text-center py-3' style={{color: color}}> {time}</h1>
-    </div>
+    <Container className='mx-auto'>
+      {/* <div className="col"></div> */}
+      <Row className="d-flex justify-content-center">
+        <Col md={4} className="text-left" style={{ maxWidth: '500px' }}>
+        <h1 className='display-1 text-start py-3' style={{color: color, fontFamily: 'digital-clock-font', fontSize: 175}}> {time}</h1>
+        </Col>
+      </Row>
+      {/* <div className="col"></div> */}
+    </Container>
   )
 }
 
@@ -183,7 +193,7 @@ function SolvesList({solves, setSolves}){
               index = solves.length - index - 1
               const ao5 = utils.getAO(solves, index, 5)
               const ao12 = utils.getAO(solves, index, 12)
-              console.log(ao5, ao12)
+              {/* console.log(ao5, ao12) */}
               return (
                 <tr key={solve._id}>
                   <td>{index + 1}</td>
@@ -204,8 +214,8 @@ function App() {
   const [solves, setSolves] = useState([])
   const [solveCnt, setSolveCnt] = useState(0)
   const [scramble, setScramble] = useState(0)
-  const userId = useRef("monke")
-  console.log(userId.current)
+  const userId = useRef("")
+  // console.log(userId.current)
   // setScramble("monke")
   useEffect(()=>{
     const scrambler = scramby()
@@ -220,22 +230,27 @@ function App() {
         </Col>
       </Row> */}
       {/* <Container> */}
-        <Row className='h-100' >
-          <Col className='pl-0 pr-0' sm={3} style={{height: '100%'}}>
+        <Row className='h-100 g-0' style={{backgroundColor: "lightgreen"}}>
+          <Col className='pl-0 pr-0 w-25 rounded-2' sm={3} style={{height: '100%', backgroundColor: 'grey'}}>
             <div className='h-50'>
               <User setSolves={setSolves} userId={userId}/>
             </div>
-            <Container className="h-50" style={{overflowY: 'auto', overflowX: 'hidden', backgroundColor:'lightcyan'}}>
+            <div className="h-50 w-100 rounded-2" style={{overflowY: 'auto', overflowX: 'hidden', backgroundColor:'lightcyan'}}>
               <SolvesList solves={solves} setSolves={setSolves}/>
-            </Container>
-          </Col>
-          <Col className='pl-0 pr-0' sm={9} style={{height: '100%'}} id="solver" tabIndex="0"> 
-            {/* <p>monke</p> */}
-            <div className='h-25' style={{backgroundColor:'lightyellow'}}>
-              <Scramble solveCnt={solveCnt} scramble={scramble}/>
             </div>
-            <div className='h-75 my-auto w-100' style={{backgroundColor:'lightgreen'}}>
-              <Timer userId={userId} solveCnt={solveCnt} setSolveCnt={setSolveCnt} solves={solves} setSolves={setSolves} scramble={scramble} setScramble={setScramble}/>
+          </Col>
+          <Col className='pl-0 pr-0 shadow-none no-outline' sm={9} style={{height: '100%' }} id="solver" tabIndex="0"> 
+            {/* <p>monke</p> */}
+            <div className='d-flex h-25 rounded-2 shadow-large align-items-center' style={{backgroundColor:'lightyellow'}}>
+              <div className='mx-auto'>
+                {/* <h1 className='text-center display-5'>Solve {solveCnt + 1}</h1> */}
+                <Scramble solveCnt={solveCnt} scramble={scramble}/>
+              </div>
+            </div>
+            <div className='h-75 w-100 d-flex align-items-center' style={{backgroundColor:'lightgreen'}}>
+              <div className='w-100'>
+                <Timer userId={userId} solveCnt={solveCnt} setSolveCnt={setSolveCnt} solves={solves} setSolves={setSolves} scramble={scramble} setScramble={setScramble}/>
+              </div>
             </div>
           </Col>
         </Row>

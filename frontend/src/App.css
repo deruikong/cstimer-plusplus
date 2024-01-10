@@ -37,6 +37,15 @@
   }
 }
 
+@font-face{
+  font-family:'digital-clock-font';
+  src: url('../font/digital-7.ttf');
+ }
+
+.no-outline:focus {
+  outline: none;
+}
+
 .full-screen-div {
   width: 100vw;
   height: 100%;

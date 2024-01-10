@@ -10,18 +10,18 @@ mongoose.connect(url)
 
 console.log(url)
 
-solves = [
-  {
-    "time": 1637,
-    "scramble": "monke L R F U",
-    "id": 1
-  },
-  {
-    "time": 1412,
-    "scramble": "monke L R F U",
-    "id": 2
-  },
-]
+// solves = [
+//   {
+//     "time": 1637,
+//     "scramble": "monke L R F U",
+//     "id": 1
+//   },
+//   {
+//     "time": 1412,
+//     "scramble": "monke L R F U",
+//     "id": 2
+//   },
+// ]
 
 const solveSchema = new mongoose.Schema({
   time: Number,
@@ -95,7 +95,7 @@ app.post('/api/user/:id', (request, response) => {
 
 app.post('/api/user/:id/solves', (request, response) => {
   const body = request.body
-  console.log("monke")
+  // console.log("monke")
   if(!body.time){
     return response.status(400).json({ 
       error: 'content missing' 
@@ -106,7 +106,7 @@ app.post('/api/user/:id/solves', (request, response) => {
     time: body.time,
     scramble: body.scramble,
   }
-  console.log(solve)
+  console.log(solve, request.params.id)
   const user = User.findOneAndUpdate(
     {username: request.params.id},
     {$push: { solvesList : solve }},
