@@ -11,7 +11,7 @@ This project was created to imitate [csTimer](https://cstimer.net) but with the 
 
 - Navigate to ``frontend`` and ``backend`` and run ``npm install`` respectively
 - Run ``npm start`` in ``frontend``
-- Run ``node index.js`` in ``backend``
+- Run ``npm run dev`` in ``backend``
 - The app should be located at ``http://localhost:3000``
 
 
